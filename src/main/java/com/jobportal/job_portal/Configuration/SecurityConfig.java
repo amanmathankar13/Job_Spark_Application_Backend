@@ -1,5 +1,7 @@
 package com.jobportal.job_portal.Configuration;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import com.jobportal.job_portal.JWT.JwtAuthenticationEntryPoint;
 import com.jobportal.job_portal.JWT.JwtAuthenticationFilter;
 
@@ -28,8 +34,8 @@ public class SecurityConfig {
         //     req.requestMatchers("/**").permitAll().anyRequest().permitAll());
         //     http.csrf(csrf->csrf.disable());
         //     return http.build();
-        
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/auth/login", "/users/register", "/users/verify-otp/**", "/users/send-otp/**", "/users/changePassword/**").permitAll()
@@ -41,17 +47,17 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // @Bean
-    // CorsConfigurationSource corsConfigurationSource() {
-    //     CorsConfiguration configuration = new CorsConfiguration();
-    //     configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Your React app's origin
-    //     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed methods
-    //     configuration.setAllowedHeaders(Arrays.asList("*")); // Allowed headers
-    //     configuration.setAllowCredentials(true); // Allow credentials (cookies) if needed
-    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    //     source.registerCorsConfiguration("/**", configuration); // Apply to all endpoints
-    //     return source;
-    // }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Your React app's origin
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed methods
+        configuration.setAllowedHeaders(Arrays.asList("*")); // Allowed headers
+        configuration.setAllowCredentials(true); // Allow credentials (cookies) if needed
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Apply to all endpoints
+        return source;
+    }
 
 }
 
