@@ -36,15 +36,14 @@ public class SecurityConfig {
         //     return http.build();
         
         http
-        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-        .csrf(csrf-> csrf.disable())
-        .authorizeRequests()
-        .requestMatchers("/auth/login" , "/users/register", "/users/verify-otp/**", "/users/send-otp/**", "users/changePassword/**").permitAll()
-        .anyRequest()
-        .authenticated()
-        .and()
-        .exceptionHandling(ex-> ex.authenticationEntryPoint(point))
-        .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/auth/login", "/users/register", "/users/verify-otp/**", "/users/send-otp/**", "users/changePassword/**").permitAll()
+                        .anyRequest()
+                        .authenticated())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
         
