@@ -50,7 +50,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Your React app's origin
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://job-spark-application-frontend.onrender.com")); // Your React app's origin
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed methods
         configuration.setAllowedHeaders(Arrays.asList("*")); // Allowed headers
         configuration.setAllowCredentials(true); // Allow credentials (cookies) if needed
